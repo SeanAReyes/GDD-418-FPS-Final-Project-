@@ -23,6 +23,10 @@ namespace FPS.Weapons
         [Tooltip("Optional particle system for muzzle flash.")]
         public ParticleSystem muzzleFlash;
 
+        [Header("Audio")]
+        [Tooltip("AudioSource used for all gun sounds. Add this component to the Gun GameObject.")]
+        public AudioSource audioSource;
+
         [Header("Bullet Tracer")]
         [Tooltip("LineRenderer used to draw the bullet tracer.")]
         public LineRenderer bulletTracer;
@@ -67,6 +71,7 @@ namespace FPS.Weapons
             _nextFireTime = Time.time + 1f / gunData.fireRate;
 
             PlayMuzzleFlash();
+            PlaySound(gunData.shootSound);
 
             // Raycast from screen center outward
             Ray ray = aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
@@ -108,6 +113,12 @@ namespace FPS.Weapons
             if (muzzleFlash != null)
                 muzzleFlash.Play();
         }
+        
+        private void PlaySound(AudioClip clip)
+        {
+            if (audioSource == null && clip == null) return;
+                audioSource.PlayOneShot(clip, gunData.audioVolume);
+        }
 
         private IEnumerator ShowTracer(Vector3 start, Vector3 end)
         {
@@ -133,6 +144,7 @@ namespace FPS.Weapons
             _currentAmmo = gunData.magazineSize;
             _isReloading = false;
             OnReloadEnd?.Invoke();
+            PlaySound(gunData.reloadSound);
             Debug.Log($"[GunController] Reload complete.");
         }
 

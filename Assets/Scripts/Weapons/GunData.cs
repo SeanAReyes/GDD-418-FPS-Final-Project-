@@ -28,5 +28,20 @@ namespace FPS.Weapons
         [Header("Visual")]
         [Tooltip("Time in seconds the bullet tracer line remains visible.")]
         public float tracerDuration = 0.05f;
+
+        [Header("Audio")]
+        [Tooltip("Sound played when firing the gun.")]
+        public AudioClip shootSound;
+
+        [Tooltip("Sound played when reloading the gun.")]
+        public AudioClip reloadSound;
+
+        [Tooltip("Volume for all gun audio. 0 = silent, 1 = full.")]
+        public float audioVolume = 1f;
+
+
+
+
+
     }
 }
