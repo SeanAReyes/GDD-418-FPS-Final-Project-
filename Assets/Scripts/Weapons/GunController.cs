@@ -144,5 +144,13 @@ namespace FPS.Weapons
 
         /// <summary>Returns whether the gun is currently reloading.</summary>
         public bool IsReloading() => _isReloading;
+
+        public void TryReload()
+        {
+            if (_isReloading) return;
+            if (_currentAmmo >= gunData.magazineSize) return;
+
+            StartCoroutine(Reload());
+        }
     }
 }

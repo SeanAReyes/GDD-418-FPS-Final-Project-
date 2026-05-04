@@ -33,6 +33,8 @@ namespace FPS.Player
 
             if (_input.fire)
                 equippedGun.TryFire();
+            if (_input.reload)
+                equippedGun.TryReload();
         }
     }
 }

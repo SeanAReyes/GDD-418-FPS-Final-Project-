@@ -13,6 +13,7 @@ namespace StarterAssets
 		public bool jump;
 		public bool sprint;
 		public bool fire;
+		public bool reload;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -48,6 +49,10 @@ namespace StarterAssets
 		{
 			FireInput(value.isPressed);
 		}
+		public void OnReload(InputValue value)
+		{
+			ReloadInput(value.isPressed);
+		}
 #endif
 
 
@@ -70,11 +75,19 @@ namespace StarterAssets
 		{
 			sprint = newSprintState;
 		}
+		public void ReloadInput(bool newReloadState)
+		{
+			reload = newReloadState;
+		}
 		public void FireInput(bool newFireState)
 		{
 			fire = newFireState;
 		}
-		
+		private System.Collections.IEnumerator Start()
+		{
+			yield return null;
+			SetCursorState(cursorLocked);
+		}
 		private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
@@ -83,6 +96,7 @@ namespace StarterAssets
 		private void SetCursorState(bool newState)
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+			Cursor.visible = !newState;
 		}
 	}
 	
