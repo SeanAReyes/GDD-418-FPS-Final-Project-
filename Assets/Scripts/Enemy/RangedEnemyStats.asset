@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84300666f723040189961d1469667750, type: 3}
-  m_Name: BasicEnemyStats
+  m_Name: RangedEnemyStats
   m_EditorClassIdentifier: Assembly-CSharp::FPS.Enemy.EnemyStats
   maxHealth: 50
-  moveSpeed: 4
-  stoppingDistance: 2
-  aggroRange: 20
-  fovAngle: 110
+  moveSpeed: 3.5
+  stoppingDistance: 13
+  aggroRange: 30
+  fovAngle: 70
   eyeHeight: 1.4
   attackDamage: 10
   attackRate: 1.5
-  attackRange: 2
-  isRanged: 0
-  bulletSpeed: 8
+  attackRange: 15
+  isRanged: 1
+  bulletSpeed: 10

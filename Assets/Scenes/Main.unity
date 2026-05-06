@@ -1671,7 +1671,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59eb5abe7992640c0aa83bf00bafecc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FPS.Enemy.EnemySpawner
-  enemyPrefab: {fileID: 2191749935111451433, guid: 29606ad06490e46cd85b5019c173aa28, type: 3}
+  meleeEnemyPrefab: {fileID: 2191749935111451433, guid: 29606ad06490e46cd85b5019c173aa28, type: 3}
+  rangedEnemyPrefab: {fileID: 2191749935111451433, guid: 32b99049034d941529bbec3104fe56d7, type: 3}
   initialEnemyCount: 3
   maxEnemyCount: 10
   spawnInterval: 3
@@ -1782,6 +1783,100 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4135013735270702856, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
   m_PrefabInstance: {fileID: 1213580354}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1582939032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1582939034}
+  - component: {fileID: 1582939033}
+  - component: {fileID: 1582939036}
+  - component: {fileID: 1582939035}
+  m_Layer: 0
+  m_Name: AIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1582939033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582939032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413ff0664a117497799394d43a4168c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FPS.AI.PerformanceTracker
+  gunController: {fileID: 470966328}
+  playerHealth: {fileID: 994887910}
+  enemySpawner: {fileID: 1171695473}
+  evaluationInterval: 10
+  killSpeedWeight: 0.5
+  targetKillsPerInterval: 5
+  survivalWeight: 0.5
+--- !u!4 &1582939034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582939032}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.03942, y: 0, z: -9.57961}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1582939035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582939032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e48c7f026763941a18034abbcdee3950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FPS.AI.EnvironmentManager
+  removableObstacles:
+  - {fileID: 1851383695}
+  - {fileID: 995116587}
+  - {fileID: 1022559092}
+  addableObstacles: []
+--- !u!114 &1582939036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582939032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06760728764694fc0a0f119a9c00c16e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FPS.AI.AIDirector
+  performanceTracker: {fileID: 1582939033}
+  enemySpawner: {fileID: 1171695473}
+  environmentManager: {fileID: 1582939035}
+  highPerformanceThreshold: 0.65
+  lowPerformanceThreshold: 0.35
+  enemyAdjustmentStep: 1
+  rangedRatioLow: 0
+  rangedRatioNormal: 0.25
+  rangedRatioHigh: 0.6
+  bulletSpeedLow: 4
+  bulletSpeedNormal: 8
+  bulletSpeedHigh: 14
 --- !u!1 &1636571854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,3 +2063,4 @@ SceneRoots:
   - {fileID: 671417364}
   - {fileID: 273199773}
   - {fileID: 1171695472}
+  - {fileID: 1582939034}

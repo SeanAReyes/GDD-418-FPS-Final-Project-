@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 6748492861917225515}
   - component: {fileID: 4457717726758193653}
   m_Layer: 7
-  m_Name: Enemy
+  m_Name: EnemyRanged
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,6 +124,7 @@ Transform:
   m_Children:
   - {fileID: 1395889080273685827}
   - {fileID: 6164132330837630741}
+  - {fileID: 6717576619484572057}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &7543135755439782086
@@ -160,9 +161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2338137aa4f214ee1b1be689a06f55cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FPS.Enemy.EnemyController
-  stats: {fileID: 11400000, guid: 596c4985665b74ab3a67b8688d724422, type: 2}
-  bulletSpawnPoint: {fileID: 0}
-  bulletPrefab: {fileID: 0}
+  stats: {fileID: 11400000, guid: c672792a2ed2e416e8a9eb5b734fac33, type: 2}
+  bulletSpawnPoint: {fileID: 6717576619484572057}
+  bulletPrefab: {fileID: 8493647894844339288, guid: b55bd40075ff34ff9b922fbb6b6dcf96, type: 3}
 --- !u!136 &4457717726758193653
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -212,6 +213,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7441131386104757124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3737937579714942653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6717576619484572057}
+  m_Layer: 0
+  m_Name: BulletSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6717576619484572057
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3737937579714942653}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
