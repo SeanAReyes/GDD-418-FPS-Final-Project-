@@ -19,3 +19,6 @@ MonoBehaviour:
   magazineSize: 30
   reloadTime: 1.5
   tracerDuration: 0.05
+  shootSound: {fileID: 8300000, guid: f9d5a2fe43f284105a54e3c95b6c7da7, type: 3}
+  reloadSound: {fileID: 8300000, guid: 7f3c30d274d554a37a7c581bec8a710a, type: 3}
+  audioVolume: 1
