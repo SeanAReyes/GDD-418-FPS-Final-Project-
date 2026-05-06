@@ -77,7 +77,8 @@ namespace FPS.Weapons
             Ray ray = aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
             Vector3 hitPoint;
 
-            if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
+            int layerMask = ~LayerMask.GetMask("Player");
+            if (Physics.Raycast(ray, out RaycastHit hit, gunData.range, layerMask))
             {
                 hitPoint = hit.point;
                 HandleHit(hit);
