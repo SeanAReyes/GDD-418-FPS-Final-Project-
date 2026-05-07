@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: BasicEnemyStats
   m_EditorClassIdentifier: Assembly-CSharp::FPS.Enemy.EnemyStats
   maxHealth: 50
-  moveSpeed: 4
+  moveSpeed: 3.5
   stoppingDistance: 2
-  aggroRange: 20
-  fovAngle: 110
+  aggroRange: 18
+  fovAngle: 75
   eyeHeight: 1.4
-  attackDamage: 10
+  attackDamage: 12
   attackRate: 1.5
   attackRange: 2
   isRanged: 0

@@ -57,12 +57,16 @@ namespace FPS.Player
             OnPlayerDied?.Invoke();
             Debug.Log("[PlayerHealth] Player died.");
 
+            CharacterController cc = gameObject.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            
             // Disable player input — movement and shooting stop immediately
             PlayerShootInput shootInput = gameObject.GetComponent<PlayerShootInput>();
             if (shootInput != null) shootInput.enabled = false;
             
             StarterAssets.FirstPersonController fpsController = gameObject.GetComponent<StarterAssets.FirstPersonController>();
             if(fpsController != null) fpsController.enabled = false;
+            
         }
 
         /// <summary>Restores player to full health.</summary>

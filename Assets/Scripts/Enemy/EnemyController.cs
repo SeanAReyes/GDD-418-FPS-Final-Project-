@@ -36,6 +36,10 @@ namespace FPS.Enemy
 
         // Runtime bullet speed override — set by AIDirector
         private float _bulletSpeedOverride = -1f;
+        private float _aggroRangeOverride = -1f;
+        private float _attackRangeOverride = -1f;
+        private float AggroRange => _aggroRangeOverride > 0f ? _aggroRangeOverride : stats.aggroRange;
+        private float AttackRange => _attackRangeOverride > 0f ? _attackRangeOverride : stats.attackRange;
 
         // Events
         public event System.Action<EnemyController> OnEnemyDied;
@@ -118,7 +122,7 @@ namespace FPS.Enemy
 
         private void HandleIdle(float distanceToPlayer)
         {
-            if (distanceToPlayer <= stats.aggroRange && CanSeePlayer())
+            if (distanceToPlayer <= AggroRange && CanSeePlayer())
             {
                 _state = EnemyState.Chasing;
                 Debug.Log($"[EnemyController] {name} spotted the player — chasing.");
@@ -130,7 +134,7 @@ namespace FPS.Enemy
             if (!_agent.isOnNavMesh) return;
 
             // Lost sight — return to idle
-            if (distanceToPlayer > stats.aggroRange || !CanSeePlayer())
+            if (distanceToPlayer > AggroRange || !CanSeePlayer())
             {
                 _state = EnemyState.Idle;
                 _agent.ResetPath();
@@ -138,7 +142,7 @@ namespace FPS.Enemy
                 return;
             }
 
-            if (distanceToPlayer <= stats.attackRange)
+            if (distanceToPlayer <= AttackRange)
             {
                 _state = EnemyState.Attacking;
                 _agent.ResetPath();
@@ -155,7 +159,7 @@ namespace FPS.Enemy
             transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
 
             // Player moved out of attack range or behind cover — resume chasing
-            if (distanceToPlayer > stats.attackRange || !CanSeePlayer())
+            if (distanceToPlayer > AttackRange || !CanSeePlayer())
             {
                 _state = EnemyState.Chasing;
                 return;
@@ -217,6 +221,14 @@ namespace FPS.Enemy
 
         /// <summary>Called by the AI Director to change bullet speed at runtime.</summary>
         public void SetBulletSpeed(float speed) => _bulletSpeedOverride = speed;
+
+        public void SetAggroRange(float range) => _aggroRangeOverride = range;
+
+        public void SetAttackRange(float range)
+        {
+            if (!stats.isRanged) return; // Only applies to ranged enemies
+            _attackRangeOverride = range;
+        }
 
         public bool TakeDamage(float damage)
         {

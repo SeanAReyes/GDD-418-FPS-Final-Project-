@@ -4,91 +4,81 @@ namespace FPS.AI
 {
     /// <summary>
     /// Manages dynamic environment changes driven by the AI Director.
-    /// Toggles obstacle walls on/off to open or close the arena.
+    /// One set of obstacles per zone: active by default, disabled when player dominates,
+    /// re-enabled when player struggles.
     /// </summary>
     public class EnvironmentManager : MonoBehaviour
     {
-        [Header("Dynamic Obstacles")]
-        [Tooltip("Obstacles the director can disable to open the arena for struggling players.")]
+        [Header("Default Obstacles")]
+        [Tooltip("Fallback obstacles used before the first zone loads.")]
         public GameObject[] removableObstacles;
 
-        [Tooltip("Extra cover objects the director can enable to reward skilled players with more challenge.")]
-        public GameObject[] addableObstacles;
-
-        // Tracks current obstacle state
         private int _removableIndex;
-        private int _addableIndex;
 
         private void Start()
         {
-            // Ensure addable obstacles start disabled
-            foreach (GameObject obstacle in addableObstacles)
-            {
-                if (obstacle != null)
-                    obstacle.SetActive(false);
-            }
+            _removableIndex = 0;
         }
 
         /// <summary>
-        /// Called by the AI Director when the player is dominating.
-        /// Activates the next addable obstacle to increase arena complexity.
+        /// Called by ZoneManager at the start of each zone to swap obstacle sets.
+        /// </summary>
+        public void SetZoneObstacles(GameObject[] removable)
+        {
+            ResetEnvironment();
+            removableObstacles = removable;
+            _removableIndex = 0;
+            Debug.Log($"[EnvironmentManager] Zone obstacles updated — {removableObstacles?.Length ?? 0} obstacles.");
+        }
+
+        /// <summary>
+        /// Called by AIDirector when player is DOMINATING.
+        /// Removes cover one at a time — opens the arena.
+        /// </summary>
+        public void RemoveObstaclesToLimit(int maxToKeep)
+        {
+            if (removableObstacles == null || removableObstacles.Length == 0) return;
+            
+            foreach (GameObject obj in removableObstacles)
+                if (obj != null) obj.SetActive(true);
+
+            int toDisable = Mathf.Max(0, removableObstacles.Length - maxToKeep);
+            for (int i = 0; i < toDisable; i++)
+            { 
+                if (removableObstacles[i] != null)
+                {
+                    removableObstacles[i].SetActive(false);
+                    Debug.Log($"[EnvironmentManager] Obstacle removed: {removableObstacles[i].name}");
+                }
+            }
+
+            _removableIndex = toDisable;
+            Debug.Log($"[EnvironmentManager] Obstacles limited to {maxToKeep} remaining.");
+        }
+
+        /// <summary>
+        /// Called by AIDirector when player is STRUGGLING.
+        /// Re-enables all obstacles — restores cover.
         /// </summary>
         public void IncreaseObstacles()
         {
-            if (addableObstacles == null || addableObstacles.Length == 0) return;
-
-            if (_addableIndex >= addableObstacles.Length)
-            {
-                Debug.Log("[EnvironmentManager] All addable obstacles already active.");
-                return;
-            }
-
-            GameObject obstacle = addableObstacles[_addableIndex];
-            if (obstacle != null)
-            {
-                obstacle.SetActive(true);
-                Debug.Log($"[EnvironmentManager] Activated obstacle: {obstacle.name}");
-            }
-
-            _addableIndex++;
-        }
-
-        /// <summary>
-        /// Called by the AI Director when the player is struggling.
-        /// Removes the next removable obstacle to open up escape routes.
-        /// </summary>
-        public void RemoveObstacles()
-        {
             if (removableObstacles == null || removableObstacles.Length == 0) return;
 
-            if (_removableIndex >= removableObstacles.Length)
-            {
-                Debug.Log("[EnvironmentManager] All removable obstacles already removed.");
-                return;
-            }
-
-            GameObject obstacle = removableObstacles[_removableIndex];
-            if (obstacle != null)
-            {
-                obstacle.SetActive(false);
-                Debug.Log($"[EnvironmentManager] Removed obstacle: {obstacle.name}");
-            }
-
-            _removableIndex++;
-        }
-
-        /// <summary>Resets all obstacles to their original state.</summary>
-        public void ResetEnvironment()
-        {
-            foreach (GameObject obstacle in removableObstacles)
-                if (obstacle != null) obstacle.SetActive(true);
-
-            foreach (GameObject obstacle in addableObstacles)
-                if (obstacle != null) obstacle.SetActive(false);
+            foreach (GameObject obj in removableObstacles)
+                if (obj != null) obj.SetActive(true);
 
             _removableIndex = 0;
-            _addableIndex   = 0;
+            Debug.Log("[EnvironmentManager] Obstacles restored.");
+        }
 
+        /// <summary>Resets all obstacles to active state.</summary>
+        public void ResetEnvironment()
+        {
+            if (removableObstacles != null)
+                foreach (GameObject o in removableObstacles)
+                    if (o != null) o.SetActive(true);
+
+            _removableIndex = 0;
             Debug.Log("[EnvironmentManager] Environment reset.");
         }
     }
