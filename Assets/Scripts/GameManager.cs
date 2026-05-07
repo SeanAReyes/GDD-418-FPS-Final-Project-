@@ -46,5 +46,18 @@ namespace FPS
             yield return new WaitForSeconds(restartDelay);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        
+        public void HandleGameWon()
+        {
+            Debug.Log("[GameManager] Game won!");
+            enemySpawner?.PauseSpawning();
+            enemySpawner?.ClearAllEnemies();
+            StartCoroutine(WinSequence());
+        }
+        private IEnumerator WinSequence()
+        {
+            yield return new WaitForSeconds(1f);
+            Time.timeScale = 0f; // Freeze the game
+        }
     }
 }

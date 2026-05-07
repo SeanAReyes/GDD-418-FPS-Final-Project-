@@ -34,6 +34,7 @@ namespace FPS.AI
         public EnemySpawner enemySpawner;
         public AIDirector aiDirector;
         public EnvironmentManager environmentManager;
+        public GameManager gameManager;
 
         [Header("Zones")]
         [Tooltip("Zones in sequence. Index 0 = starting zone.")]
@@ -62,6 +63,7 @@ namespace FPS.AI
             if (index >= zones.Count)
             {
                 Debug.Log("[ZoneManager] All zones complete.");
+                gameManager?.HandleGameWon();
                 return;
             }
 

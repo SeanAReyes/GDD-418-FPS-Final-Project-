@@ -33,6 +33,8 @@ namespace FPS.Enemy
         private PlayerHealth _playerHealth;
         private float _currentHealth;
         private float _lastAttackTime;
+        private Vector3 _lastKnownPlayerPosition;
+        private const float ProximityAggroRange = 2.5f;
 
         // Runtime bullet speed override — set by AIDirector
         private float _bulletSpeedOverride = -1f;
@@ -124,8 +126,17 @@ namespace FPS.Enemy
         {
             if (distanceToPlayer <= AggroRange && CanSeePlayer())
             {
+                _lastKnownPlayerPosition = _playerTransform.position;
                 _state = EnemyState.Chasing;
                 Debug.Log($"[EnemyController] {name} spotted the player — chasing.");
+                return;
+            }
+
+            if (distanceToPlayer <= ProximityAggroRange)
+            {
+                _lastKnownPlayerPosition = _playerTransform.position;
+                _state = EnemyState.Chasing;
+                Debug.Log($"[EnemyController] {name} sensed the player nearby — chasing.");
             }
         }
 
@@ -133,8 +144,15 @@ namespace FPS.Enemy
         {
             if (!_agent.isOnNavMesh) return;
 
-            // Lost sight — return to idle
-            if (distanceToPlayer > AggroRange || !CanSeePlayer())
+            bool canSee = CanSeePlayer();
+
+            if (canSee)
+                _lastKnownPlayerPosition = _playerTransform.position;
+            
+            if (_lastKnownPlayerPosition == Vector3.zero)
+                _lastKnownPlayerPosition = _playerTransform.position;
+
+            if (distanceToPlayer > AggroRange * 1.5f && !canSee)
             {
                 _state = EnemyState.Idle;
                 _agent.ResetPath();
@@ -149,7 +167,7 @@ namespace FPS.Enemy
                 return;
             }
 
-            _agent.SetDestination(_playerTransform.position);
+            _agent.SetDestination(_lastKnownPlayerPosition);
         }
 
         private void HandleAttacking(float distanceToPlayer)
@@ -239,7 +257,11 @@ namespace FPS.Enemy
 
             // Taking damage always breaks idle
             if (_state == EnemyState.Idle)
+            {
+                if (_playerTransform != null)
+                    _lastKnownPlayerPosition = _playerTransform.position;
                 _state = EnemyState.Chasing;
+            }
 
             if (_currentHealth <= 0f)
             {
